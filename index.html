@@ -6,129 +6,49 @@
 
 <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
 </head>
+
 <body>
 
 <div class="container">
 
-    <!-- ================= FORM ================= -->
-    <div class="form-section">
+<!-- FORM -->
+<div class="form-section">
 
-        <h3>Enter Details</h3>
+<h3>Enter Details</h3>
 
-        <label>Upload Logo</label>
-        <input type="file" accept="image/*" onchange="loadLogo(event)">
+<input type="text" placeholder="School Name"
+oninput="updateText('school-name', this.value)">
 
-        <input type="text" placeholder="School Name"
-               oninput="updateField('school-name', this.value)">
+<input type="text" placeholder="Exam Title"
+oninput="updateText('exam-title', this.value)">
 
-        <input type="text" placeholder="Subheading"
-               oninput="updateField('subheading', this.value)">
-
-        <input type="text" placeholder="Exam Title"
-               oninput="updateField('exam-title', this.value)">
-
-        <hr>
-
-        <label>Subject</label>
-        <select id="subjectSelect" onchange="handleSubjectChange()">
-            <option value="">-- Select Subject --</option>
-            <option>English</option>
-            <option>Hindi</option>
-            <option>Mathematics</option>
-            <option>Science</option>
-            <option>Social</option>
-            <option>Computer</option>
-            <option>GK</option>
-            <option>Biology</option>
-            <option value="Other">Other</option>
-        </select>
-
-        <input id="customSubject" type="text"
-               placeholder="Enter Subject"
-               style="display:none;"
-               oninput="updateRow('row-subject','subject',this.value)">
-
-        <input type="text" placeholder="Class"
-               oninput="updateRow('row-class','className',this.value)">
-
-        <input type="text" placeholder="Student Name"
-               oninput="updateRow('row-student','studentName',this.value)">
-
-        <input type="text" placeholder="Roll No"
-               oninput="updateRow('row-roll','rollNo',this.value)">
-
-        <input type="text" placeholder="Total Marks"
-               oninput="updateRow('row-marks','totalMarks',this.value)">
-	
-	<div id="validationMessage" style="color:red; font-weight:bold;"></div>
+<input type="number" placeholder="Total Marks"
+oninput="updateText('totalMarks', this.value)">
 
 <hr>
 
-<label>Save Template Name</label>
-<input type="text" id="templateName" placeholder="Enter template name">
+<button onclick="addSection()">Add Section</button>
+<button onclick="printPaper()">Print</button>
 
-<button onclick="saveTemplate()">Save Template</button>
+</div>
 
-<select id="savedTemplates" onchange="loadTemplate()">
-    <option value="">-- Load Saved Template --</option>
-</select>
+<!-- PREVIEW -->
+<div class="paper-wrapper">
+<div id="paper" class="paper-container">
 
-	     
+<div class="header">
+<h1 id="school-name"></h1>
+<div id="exam-title"></div>
+<div>Total Marks: <span id="totalMarks"></span></div>
+</div>
 
-        <label>Time</label>
-        <input id="hours" type="number" placeholder="Hours" oninput="updateTime()">
-        <input id="minutes" type="number" placeholder="Minutes" oninput="updateTime()">
+<div class="section-divider"></div>
 
-        <hr>
+<div id="questions-container"></div>
 
-        <button onclick="addSection()">Add Section</button>
-
-        <hr>
-
-        <button onclick="downloadPDF()">Download PDF</button>
-        <button onclick="printPaper()">Print</button>
-
-    </div>
-
-    <!-- ================= PREVIEW ================= -->
-    <div class="paper-wrapper">
-
-        <div id="paper" class="paper-container">
-
-            <!-- HEADER -->
-            <div class="header">
-                <img id="logoPreview" class="logo" style="display:none;">
-                <h1 id="school-name" class="school-name"></h1>
-                <div id="subheading" class="subheading"></div>
-                <div id="exam-title" class="exam-title"></div>
-            </div>
-
-            <!-- DETAILS -->
-            <div class="details">
-                <div class="left-column">
-                    <div id="row-subject">Subject: <span id="subject"></span></div>
-                    <div id="row-class">Class: <span id="className"></span></div>
-                    <div id="row-student">Student Name: <span id="studentName"></span></div>
-                </div>
-
-                <div class="right-column">
-                    <div id="row-roll">Roll No: <span id="rollNo"></span></div>
-                    <div id="row-time">Time: <span id="timeDisplay"></span></div>
-                    <div id="row-marks">Total Marks: <span id="totalMarks"></span></div>
-                </div>
-            </div>
-
-            <!-- THICK DIVIDER -->
-            <div class="section-divider"></div>
-
-            <!-- QUESTIONS -->
-            <div id="questions-container"></div>
-
-        </div>
-
-    </div>
+</div>
+</div>
 
 </div>
 

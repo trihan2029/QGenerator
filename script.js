@@ -1,15 +1,8 @@
 let sectionCount = 0;
 
-/* Basic Updates */
-function updateField(id,value){
-document.getElementById(id).innerText=value;
-}
-
-function updateRow(rowId,spanId,value){
-const row=document.getElementById(rowId);
-const span=document.getElementById(spanId);
-span.innerText=value;
-row.style.display=value?"block":"none";
+/* Basic */
+function updateText(id,value){
+document.getElementById(id).innerText = value;
 }
 
 /* Roman */
@@ -18,7 +11,9 @@ const r=[["M",1000],["CM",900],["D",500],["CD",400],
 ["C",100],["XC",90],["L",50],["XL",40],
 ["X",10],["IX",9],["V",5],["IV",4],["I",1]];
 let s="";
-for(let [l,v] of r) while(num>=v){s+=l;num-=v;}
+for(let [l,v] of r){
+while(num>=v){ s+=l; num-=v; }
+}
 return s;
 }
 
@@ -26,13 +21,19 @@ function toSmallRoman(n){
 return toRoman(n).toLowerCase();
 }
 
-/* Section Description */
+/* Description */
 function getDescription(type){
-if(type==="MCQ")
-return "Choose the correct answer from the options given below.";
-if(type==="Match")
-return "Match the following correctly.";
-return "Answer the following questions.";
+const map={
+VeryShort:"Answer in one or two sentences.",
+Short:"Answer the following questions.",
+Long:"Answer the following questions in detail.",
+MCQ:"Choose the correct answer from the options given below.",
+Match:"Match the following correctly.",
+Fill:"Fill in the blanks with suitable answers.",
+TF:"State whether the statements are True or False.",
+OneWord:"Answer in one word."
+};
+return map[type];
 }
 
 /* Add Section */
@@ -50,14 +51,19 @@ section.innerHTML=`
 
 <div class="section-left">
 ${roman}.
-<select class="section-type" onchange="changeDescription(this)">
+<select class="section-type" onchange="updateDescription(this)">
+<option value="VeryShort">Very Short Answer</option>
 <option value="Short">Short Answer</option>
+<option value="Long">Long Answer</option>
 <option value="MCQ">MCQ</option>
 <option value="Match">Match the Following</option>
+<option value="Fill">Fill in the Blanks</option>
+<option value="TF">True / False</option>
+<option value="OneWord">One Word Answer</option>
 </select>
 
 <div class="section-description">
-${getDescription("Short")}
+${getDescription("VeryShort")}
 </div>
 </div>
 
@@ -70,13 +76,14 @@ ${getDescription("Short")}
 </div>
 
 <div class="questions"></div>
+
 <button onclick="addQuestion(this)">Add Question</button>
 <button onclick="this.closest('.section-block').remove()">Remove Section</button>
 `;
 
 container.appendChild(section);
 
-/* Section marks calculation */
+/* Marks calculation */
 const numInput=section.querySelector(".numQ");
 const marksInput=section.querySelector(".marksQ");
 const totalSpan=section.querySelector(".sectionTotal");
@@ -90,8 +97,8 @@ numInput.oninput=calc;
 marksInput.oninput=calc;
 }
 
-/* Change Description */
-function changeDescription(select){
+/* Update description */
+function updateDescription(select){
 const type=select.value;
 const desc=select.parentElement.querySelector(".section-description");
 desc.innerText=getDescription(type);
@@ -143,7 +150,7 @@ ${number}.
 qContainer.appendChild(div);
 }
 
-/* Add Match Pair */
+/* Match pairs */
 function addMatchPair(btn){
 
 const q=btn.parentElement;
@@ -162,6 +169,7 @@ left.appendChild(l);
 right.appendChild(r);
 }
 
+/* Print */
 function printPaper(){
 window.print();
 }
