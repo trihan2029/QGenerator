@@ -1,5 +1,8 @@
+/* ================= BASIC FUNCTIONS ================= */
+
 function updateField(id, value){
     document.getElementById(id).innerText = value;
+    validateTotalMarks();
 }
 
 function updateRow(rowId, spanId, value){
@@ -36,17 +39,8 @@ function loadLogo(event){
     reader.readAsDataURL(event.target.files[0]);
 }
 
-function handleSubjectChange(){
-    const v=subjectSelect.value;
-    if(v==="Other"){
-        customSubject.style.display="block";
-    }else{
-        customSubject.style.display="none";
-        updateRow("row-subject","subject",v);
-    }
-}
+/* ================= ROMAN ================= */
 
-/* Roman */
 function toRoman(num){
     const r=[["M",1000],["CM",900],["D",500],["CD",400],
              ["C",100],["XC",90],["L",50],["XL",40],
@@ -56,16 +50,13 @@ function toRoman(num){
     return s;
 }
 
-function toSmallRoman(n){
-    return toRoman(n).toLowerCase();
-}
+/* ================= SECTION SYSTEM ================= */
 
 let sectionCount=0;
 
 function addSection(){
 
     sectionCount++;
-
     const container = document.getElementById("questions-container");
     const roman=toRoman(sectionCount);
 
@@ -81,77 +72,134 @@ function addSection(){
                     <option>Match the Following</option>
                 </select>
             </div>
-            <button onclick="this.closest('.section-block').remove()">Remove Section</button>
+            <div>
+                <input type="number" class="numQ" placeholder="No.Q" style="width:60px;"> *
+                <input type="number" class="marksQ" placeholder="Marks" style="width:60px;"> =
+                <span class="sectionTotal">0</span>
+            </div>
+            <button onclick="removeSection(this)">Remove</button>
         </div>
         <div class="questions"></div>
         <button onclick="addQuestion(this)">Add Question</button>
     `;
 
     container.appendChild(section);
+
+    const numInput = section.querySelector(".numQ");
+    const marksInput = section.querySelector(".marksQ");
+    const totalSpan = section.querySelector(".sectionTotal");
+
+    function calculate(){
+        const total = (numInput.value && marksInput.value)
+            ? numInput.value * marksInput.value
+            : 0;
+        totalSpan.innerText = total;
+        validateTotalMarks();
+    }
+
+    numInput.oninput = calculate;
+    marksInput.oninput = calculate;
 }
+
+function removeSection(btn){
+    btn.closest(".section-block").remove();
+    validateTotalMarks();
+}
+
+/* ================= QUESTION SYSTEM ================= */
 
 function addQuestion(btn){
 
     const section=btn.parentElement;
-    const type=section.querySelector(".section-type").value;
     const qContainer=section.querySelector(".questions");
     const number=qContainer.children.length+1;
 
     const div=document.createElement("div");
     div.className="question-item";
 
-    if(type==="MCQ"){
-        div.innerHTML=`
-            ${number}.
-            <textarea class="question-text"></textarea>
-            <div class="mcq-options">
-                (a)<input type="text">
-                (b)<input type="text">
-                (c)<input type="text">
-                (d)<input type="text">
-            </div>
-            <button onclick="this.parentElement.remove()">Remove</button>
-        `;
-    }
-    else if(type==="Match the Following"){
-        div.innerHTML=`
-            ${number}.
-            <div class="match-container">
-                <div class="match-column left"></div>
-                <div class="match-column right"></div>
-            </div>
-            <button onclick="addMatchPair(this)">Add Pair</button>
-            <button onclick="this.parentElement.remove()">Remove</button>
-        `;
-    }
-    else{
-        div.innerHTML=`
-            ${number}.
-            <textarea class="question-text"></textarea>
-            <button onclick="this.parentElement.remove()">Remove</button>
-        `;
-    }
+    div.innerHTML=`
+        ${number}.
+        <textarea class="question-text"></textarea>
+        <button onclick="this.parentElement.remove()">Remove</button>
+    `;
 
     qContainer.appendChild(div);
 }
 
-function addMatchPair(btn){
+/* ================= VALIDATION ================= */
 
-    const q=btn.parentElement;
-    const left=q.querySelector(".left");
-    const right=q.querySelector(".right");
+function validateTotalMarks(){
 
-    const count=left.children.length+1;
+    const headerTotal = parseInt(document.getElementById("totalMarks").innerText) || 0;
 
-    const l=document.createElement("div");
-    l.innerHTML=`${toSmallRoman(count)}. <input type="text">`;
+    const sections = document.querySelectorAll(".sectionTotal");
 
-    const r=document.createElement("div");
-    r.innerHTML=`(${String.fromCharCode(96+count)}) <input type="text">`;
+    let calculatedTotal = 0;
 
-    left.appendChild(l);
-    right.appendChild(r);
+    sections.forEach(s => {
+        calculatedTotal += parseInt(s.innerText) || 0;
+    });
+
+    const message = document.getElementById("validationMessage");
+
+    if(headerTotal !== calculatedTotal){
+        message.innerText = 
+            "Warning: Total Marks mismatch! Section Total = "
+            + calculatedTotal + ", Header Total = " + headerTotal;
+    }else{
+        message.innerText = "";
+    }
 }
+
+/* ================= CACHE SYSTEM ================= */
+
+function saveTemplate(){
+
+    const name = document.getElementById("templateName").value;
+    if(!name){
+        alert("Enter template name");
+        return;
+    }
+
+    const data = {
+        school: schoolName.innerText,
+        subject: subject.innerText,
+        totalMarks: totalMarks.innerText
+    };
+
+    localStorage.setItem("template_"+name, JSON.stringify(data));
+    loadSavedTemplates();
+}
+
+function loadSavedTemplates(){
+
+    const select = document.getElementById("savedTemplates");
+    select.innerHTML='<option value="">-- Load Saved Template --</option>';
+
+    for(let key in localStorage){
+        if(key.startsWith("template_")){
+            const name = key.replace("template_","");
+            select.innerHTML+=`<option value="${name}">${name}</option>`;
+        }
+    }
+}
+
+function loadTemplate(){
+
+    const name = document.getElementById("savedTemplates").value;
+    if(!name) return;
+
+    const data = JSON.parse(localStorage.getItem("template_"+name));
+
+    schoolName.innerText = data.school;
+    subject.innerText = data.subject;
+    totalMarks.innerText = data.totalMarks;
+}
+
+/* Initialize cache list */
+window.onload = loadSavedTemplates;
+
+/* ================= PDF ================= */
 
 function downloadPDF(){
     html2pdf().from(document.getElementById("paper")).save("question-paper.pdf");

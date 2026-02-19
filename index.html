@@ -61,6 +61,21 @@
 
         <input type="text" placeholder="Total Marks"
                oninput="updateRow('row-marks','totalMarks',this.value)">
+	
+	<div id="validationMessage" style="color:red; font-weight:bold;"></div>
+
+<hr>
+
+<label>Save Template Name</label>
+<input type="text" id="templateName" placeholder="Enter template name">
+
+<button onclick="saveTemplate()">Save Template</button>
+
+<select id="savedTemplates" onchange="loadTemplate()">
+    <option value="">-- Load Saved Template --</option>
+</select>
+
+	     
 
         <label>Time</label>
         <input id="hours" type="number" placeholder="Hours" oninput="updateTime()">
