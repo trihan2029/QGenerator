@@ -5,40 +5,48 @@
 <title>Question Paper Generator</title>
 
 <link rel="stylesheet" href="style.css">
-<script src="html2pdf.bundle.min.js"></script>
+
+<!-- Use CDN for GitHub Pages -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 </head>
 <body>
 
 <div class="container">
 
+    <!-- FORM SECTION -->
     <div class="form-section">
+
         <h3>Enter Details</h3>
-
-        <label>Saved Templates</label>
-        <select id="savedTemplates" onchange="loadTemplate()">
-            <option value="">-- Select Saved --</option>
-        </select>
-
-        <button onclick="saveTemplate()">Save Current</button>
-        <button onclick="deleteTemplate()">Delete Selected</button>
-
-        <hr>
 
         <label>Upload Logo</label>
         <input type="file" accept="image/*" onchange="loadLogo(event)">
 
-        <input id="schoolInput" type="text" placeholder="School Name" oninput="updateField('school-name', this.value)">
-        <input id="subInput" type="text" placeholder="Subheading" oninput="updateField('subheading', this.value)">
-        <input id="examInput" type="text" placeholder="Exam Title" oninput="updateField('exam-title', this.value)">
+        <input id="schoolInput" type="text" placeholder="School Name"
+               oninput="updateField('school-name', this.value)">
+
+        <input id="subInput" type="text" placeholder="Subheading"
+               oninput="updateField('subheading', this.value)">
+
+        <input id="examInput" type="text" placeholder="Exam Title"
+               oninput="updateField('exam-title', this.value)">
 
         <hr>
 
-        <input id="subjectInput" type="text" placeholder="Subject" oninput="updateRow('row-subject','subject',this.value)">
-        <input id="classInput" type="text" placeholder="Class" oninput="updateRow('row-class','className',this.value)">
-        <input id="studentInput" type="text" placeholder="Student Name Line" oninput="updateRow('row-student','studentName',this.value)">
-        <input id="rollInput" type="text" placeholder="Roll No" oninput="updateRow('row-roll','rollNo',this.value)">
-        <input id="marksInput" type="text" placeholder="Total Marks" oninput="updateRow('row-marks','totalMarks',this.value)">
+        <input type="text" placeholder="Subject"
+               oninput="updateRow('row-subject','subject',this.value)">
+
+        <input type="text" placeholder="Class"
+               oninput="updateRow('row-class','className',this.value)">
+
+        <input type="text" placeholder="Student Name"
+               oninput="updateRow('row-student','studentName',this.value)">
+
+        <input type="text" placeholder="Roll No"
+               oninput="updateRow('row-roll','rollNo',this.value)">
+
+        <input type="text" placeholder="Total Marks"
+               oninput="updateRow('row-marks','totalMarks',this.value)">
 
         <label>Time</label>
         <input id="hours" type="number" placeholder="Hours" oninput="updateTime()">
@@ -48,9 +56,12 @@
 
         <button onclick="downloadPDF()">Download PDF</button>
         <button onclick="printPaper()">Print</button>
+
     </div>
 
+    <!-- PAPER PREVIEW -->
     <div class="paper-wrapper">
+
         <div id="paper" class="paper-container">
 
             <div class="header">
@@ -61,29 +72,47 @@
             </div>
 
             <div class="details">
-	  
 
-                <div class="column left-column">
-                    <div id="row-subject" class="detail-row">Subject: <span id="subject"></span></div>
-                    <div id="row-class" class="detail-row">Class: <span id="className"></span></div>
-                    <div id="row-student" class="detail-row">Student Name: <span id="studentName"></span></div>
-                </div>
-	      
+                <div class="left-column">
+                    <div id="row-subject" class="detail-row">
+                        Subject: <span id="subject"></span>
+                    </div>
 
-                <div class="column right-column">
-                    <div id="row-roll" class="detail-row">Roll No: <span id="rollNo"></span></div>
-                    <div id="row-time" class="detail-row">Time: <span id="timeDisplay"></span></div>
-                    <div id="row-marks" class="detail-row">Total Marks: <span id="totalMarks"></span></div>
+                    <div id="row-class" class="detail-row">
+                        Class: <span id="className"></span>
+                    </div>
+
+                    <div id="row-student" class="detail-row">
+                        Student Name: <span id="studentName"></span>
+                    </div>
                 </div>
-	      <div class="section-divider"></div>
+
+                <div class="right-column">
+                    <div id="row-roll" class="detail-row">
+                        Roll No: <span id="rollNo"></span>
+                    </div>
+
+                    <div id="row-time" class="detail-row">
+                        Time: <span id="timeDisplay"></span>
+                    </div>
+
+                    <div id="row-marks" class="detail-row">
+                        Total Marks: <span id="totalMarks"></span>
+                    </div>
+                </div>
 
             </div>
 
+            <!-- HORIZONTAL DIVIDER -->
+            <div class="section-divider"></div>
+
         </div>
+
     </div>
 
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>

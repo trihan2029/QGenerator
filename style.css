@@ -1,5 +1,3 @@
-/* ===== GLOBAL ===== */
-
 body {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 800;
@@ -7,8 +5,7 @@ body {
     background: #f0f0f0;
 }
 
-/* ===== LAYOUT ===== */
-
+/* Layout */
 .container {
     display: flex;
     gap: 20px;
@@ -16,42 +13,34 @@ body {
     align-items: flex-start;
 }
 
-/* ===== FORM SECTION ===== */
-
+/* Form */
 .form-section {
     width: 35%;
-    max-height: 95vh;
-    overflow-y: auto;
 }
 
 .form-section input,
-.form-section select,
 .form-section button {
     width: 100%;
     padding: 6px;
     margin-bottom: 8px;
-    box-sizing: border-box;
 }
 
-/* ===== PAPER WRAPPER ===== */
-
+/* Paper Wrapper */
 .paper-wrapper {
     width: 65%;
     display: flex;
     justify-content: center;
 }
 
-/* ===== PAPER AREA (A4) ===== */
-
+/* A4 Paper */
 .paper-container {
     background: white;
     width: 210mm;
-    padding: 20mm;       /* Normal margins */
+    padding: 20mm;
     box-sizing: border-box;
 }
 
-/* ===== HEADER ===== */
-
+/* Header */
 .header {
     position: relative;
     text-align: center;
@@ -78,43 +67,37 @@ body {
     margin-top: 5px;
 }
 
-/* ===== DETAILS SECTION ===== */
-
+/* Details Section */
 .details {
     display: flex;
     margin-top: 20px;
     line-height: 1.5;
 }
 
-/* LEFT COLUMN */
 .left-column {
     width: 45%;
     padding-right: 20px;
-    border-right: 3px solid black;  /* Vertical divider */
+    border-right: 3px solid black; /* vertical separator */
 }
 
-/* RIGHT COLUMN */
 .right-column {
     width: 45%;
     padding-left: 20px;
 }
 
-/* DETAIL ROW */
 .detail-row {
     margin-bottom: 8px;
 }
 
-/* ===== HORIZONTAL DIVIDER BELOW DETAILS ===== */
-
+/* Horizontal Divider */
 .section-divider {
-    margin: 18px 0;
-    height: 0;
-    border: none;
-    border-top: 3px solid black;  /* Thick horizontal line */
+    width: 100%;
+    height: 4px;
+    background: black;
+    margin: 20px 0;
 }
 
-/* ===== PRINT SETTINGS ===== */
-
+/* Print Fix */
 @media print {
 
     body {
@@ -138,20 +121,5 @@ body {
     .paper-container {
         width: 100%;
         padding: 20mm;
-        box-shadow: none;
-        page-break-after: avoid;
     }
-
-    /* Force borders to show in print */
-    .left-column {
-        border-right: 3px solid black !important;
-    }
-
-    .section-divider {
-    width: 100%;
-    height: 4px;
-    background-color: black;
-    margin: 20px 0;
-}
-
 }
