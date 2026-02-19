@@ -6,7 +6,7 @@
 
 <link rel="stylesheet" href="style.css">
 
-<!-- Use CDN for GitHub Pages -->
+<!-- CDN for GitHub Pages -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 </head>
@@ -14,7 +14,7 @@
 
 <div class="container">
 
-    <!-- FORM SECTION -->
+    <!-- ================= FORM SECTION ================= -->
     <div class="form-section">
 
         <h3>Enter Details</h3>
@@ -22,18 +22,35 @@
         <label>Upload Logo</label>
         <input type="file" accept="image/*" onchange="loadLogo(event)">
 
-        <input id="schoolInput" type="text" placeholder="School Name"
+        <input type="text" placeholder="School Name"
                oninput="updateField('school-name', this.value)">
 
-        <input id="subInput" type="text" placeholder="Subheading"
+        <input type="text" placeholder="Subheading"
                oninput="updateField('subheading', this.value)">
 
-        <input id="examInput" type="text" placeholder="Exam Title"
+        <input type="text" placeholder="Exam Title"
                oninput="updateField('exam-title', this.value)">
 
         <hr>
 
-        <input type="text" placeholder="Subject"
+        <!-- SUBJECT DROPDOWN -->
+        <label>Subject</label>
+        <select id="subjectSelect" onchange="handleSubjectChange()">
+            <option value="">-- Select Subject --</option>
+            <option>English</option>
+            <option>Hindi</option>
+            <option>Mathematics</option>
+            <option>Science</option>
+            <option>Social</option>
+            <option>Computer</option>
+            <option>GK</option>
+            <option>Biology</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <input id="customSubject" type="text"
+               placeholder="Enter Subject"
+               style="display:none;"
                oninput="updateRow('row-subject','subject',this.value)">
 
         <input type="text" placeholder="Class"
@@ -54,16 +71,21 @@
 
         <hr>
 
+        <button onclick="addSection()">Add Section</button>
+
+        <hr>
+
         <button onclick="downloadPDF()">Download PDF</button>
         <button onclick="printPaper()">Print</button>
 
     </div>
 
-    <!-- PAPER PREVIEW -->
+    <!-- ================= PAPER SECTION ================= -->
     <div class="paper-wrapper">
 
         <div id="paper" class="paper-container">
 
+            <!-- HEADER -->
             <div class="header">
                 <img id="logoPreview" class="logo" style="display:none;">
                 <h1 id="school-name" class="school-name"></h1>
@@ -71,17 +93,16 @@
                 <div id="exam-title" class="exam-title"></div>
             </div>
 
+            <!-- DETAILS -->
             <div class="details">
 
                 <div class="left-column">
                     <div id="row-subject" class="detail-row">
                         Subject: <span id="subject"></span>
                     </div>
-
                     <div id="row-class" class="detail-row">
                         Class: <span id="className"></span>
                     </div>
-
                     <div id="row-student" class="detail-row">
                         Student Name: <span id="studentName"></span>
                     </div>
@@ -91,11 +112,9 @@
                     <div id="row-roll" class="detail-row">
                         Roll No: <span id="rollNo"></span>
                     </div>
-
                     <div id="row-time" class="detail-row">
                         Time: <span id="timeDisplay"></span>
                     </div>
-
                     <div id="row-marks" class="detail-row">
                         Total Marks: <span id="totalMarks"></span>
                     </div>
@@ -103,8 +122,11 @@
 
             </div>
 
-            <!-- HORIZONTAL DIVIDER -->
+            <!-- HORIZONTAL LINE -->
             <div class="section-divider"></div>
+
+            <!-- QUESTIONS AREA -->
+            <div id="questions-container"></div>
 
         </div>
 
@@ -113,6 +135,5 @@
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
