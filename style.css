@@ -5,7 +5,6 @@ body {
     background: #f0f0f0;
 }
 
-/* Layout */
 .container {
     display: flex;
     gap: 20px;
@@ -52,20 +51,6 @@ body {
     width: 80px;
 }
 
-.school-name {
-    font-size: 26px;
-    margin: 0;
-}
-
-.subheading {
-    font-size: 16px;
-}
-
-.exam-title {
-    font-size: 18px;
-    margin-top: 5px;
-}
-
 /* Details */
 .details {
     display: flex;
@@ -84,11 +69,6 @@ body {
     padding-left: 20px;
 }
 
-.detail-row {
-    margin-bottom: 8px;
-}
-
-/* Divider */
 .section-divider {
     width: 100%;
     height: 4px;
@@ -96,7 +76,7 @@ body {
     margin: 20px 0;
 }
 
-/* Section */
+/* Sections */
 .section-title {
     display: flex;
     justify-content: space-between;
@@ -109,11 +89,19 @@ body {
 }
 
 .subpart {
-    margin-left: 30px;
-    margin-top: 3px;
+    margin-top: 5px;
 }
 
-/* Print */
+/* Two column layout for MCQ/Match */
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 40px;
+    margin-left: 25px;
+    margin-top: 5px;
+}
+
+/* Remove buttons in print */
 @media print {
 
     body {
@@ -123,6 +111,10 @@ body {
 
     .form-section {
         display: none;
+    }
+
+    button {
+        display: none !important;
     }
 
     .container {
