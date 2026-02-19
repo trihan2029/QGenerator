@@ -13,11 +13,16 @@ function updateTime(){
     const h = hours.value;
     const m = minutes.value;
     const row = document.getElementById("row-time");
-    if(!h && !m){ row.style.display="none"; return; }
+
+    if(!h && !m){
+        row.style.display="none";
+        return;
+    }
 
     let t="";
     if(h) t+=h+" Hour"+(h>1?"s ":" ");
     if(m) t+=m+" Minute"+(m>1?"s":"");
+
     timeDisplay.innerText=t.trim();
     row.style.display="block";
 }
@@ -51,13 +56,17 @@ function toRoman(num){
     return s;
 }
 
-function toSmallRoman(n){ return toRoman(n).toLowerCase(); }
+function toSmallRoman(n){
+    return toRoman(n).toLowerCase();
+}
 
 let sectionCount=0;
 
 function addSection(){
 
     sectionCount++;
+
+    const container = document.getElementById("questions-container");
     const roman=toRoman(sectionCount);
 
     const section=document.createElement("div");
@@ -78,7 +87,7 @@ function addSection(){
         <button onclick="addQuestion(this)">Add Question</button>
     `;
 
-    questions-container.appendChild(section);
+    container.appendChild(section);
 }
 
 function addQuestion(btn){
@@ -135,11 +144,9 @@ function addMatchPair(btn){
     const count=left.children.length+1;
 
     const l=document.createElement("div");
-    l.className="match-item";
     l.innerHTML=`${toSmallRoman(count)}. <input type="text">`;
 
     const r=document.createElement("div");
-    r.className="match-item";
     r.innerHTML=`(${String.fromCharCode(96+count)}) <input type="text">`;
 
     left.appendChild(l);
