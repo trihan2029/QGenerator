@@ -5,26 +5,25 @@
 <title>Question Paper Generator</title>
 
 <link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
 
 <div class="container">
 
-<!-- FORM -->
+<!-- ================= FORM ================= -->
 <div class="form-section">
 
 <h3>Enter Details</h3>
 
-<input type="text" placeholder="School Name"
-oninput="updateText('school-name', this.value)">
+<label>School Name</label>
+<input type="text" oninput="updateText('school-name', this.value)">
 
-<input type="text" placeholder="Exam Title"
-oninput="updateText('exam-title', this.value)">
+<label>Exam Title</label>
+<input type="text" oninput="updateText('exam-title', this.value)">
 
-<input type="number" placeholder="Total Marks"
-oninput="updateText('totalMarks', this.value)">
+<label>Total Marks</label>
+<input type="number" oninput="updateText('totalMarks', this.value)">
 
 <hr>
 
@@ -33,14 +32,19 @@ oninput="updateText('totalMarks', this.value)">
 
 </div>
 
-<!-- PREVIEW -->
+
+<!-- ================= PREVIEW ================= -->
 <div class="paper-wrapper">
+
 <div id="paper" class="paper-container">
 
+<!-- HEADER -->
 <div class="header">
 <h1 id="school-name"></h1>
 <div id="exam-title"></div>
-<div>Total Marks: <span id="totalMarks"></span></div>
+<div class="marks-line">
+Total Marks: <span id="totalMarks"></span>
+</div>
 </div>
 
 <div class="section-divider"></div>
@@ -48,6 +52,7 @@ oninput="updateText('totalMarks', this.value)">
 <div id="questions-container"></div>
 
 </div>
+
 </div>
 
 </div>

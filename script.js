@@ -1,6 +1,6 @@
 let sectionCount = 0;
 
-/* Basic */
+/* Header */
 function updateText(id,value){
 document.getElementById(id).innerText = value;
 }
@@ -21,7 +21,7 @@ function toSmallRoman(n){
 return toRoman(n).toLowerCase();
 }
 
-/* Description */
+/* Section Description */
 function getDescription(type){
 const map={
 VeryShort:"Answer in one or two sentences.",
@@ -97,7 +97,7 @@ numInput.oninput=calc;
 marksInput.oninput=calc;
 }
 
-/* Update description */
+/* Update Description */
 function updateDescription(select){
 const type=select.value;
 const desc=select.parentElement.querySelector(".section-description");
@@ -150,7 +150,7 @@ ${number}.
 qContainer.appendChild(div);
 }
 
-/* Match pairs */
+/* Match Pair */
 function addMatchPair(btn){
 
 const q=btn.parentElement;
@@ -169,7 +169,6 @@ left.appendChild(l);
 right.appendChild(r);
 }
 
-/* Print */
 function printPaper(){
 window.print();
 }
