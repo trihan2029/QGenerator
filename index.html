@@ -1,107 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Question Paper Generator</title>
-
-<link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
+    <meta charset="UTF-8">
+    <title>Question Paper Generator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
 
-<div class="form-section">
+    <!-- HEADER (UNCHANGED STRUCTURE) -->
+    <div id="header-section">
+        <div class="header-top">
+            <input type="file" id="logoUpload">
+            <h1 contenteditable="true" class="school-name">SCHOOL NAME</h1>
+        </div>
 
-<h3>Enter Details</h3>
+        <h3 contenteditable="true">Sub Heading</h3>
+        <h2 contenteditable="true">Exam Title</h2>
 
-<label>Upload Logo</label>
-<input type="file" accept="image/*" onchange="loadLogo(event)">
+        <div class="details">
+            <div>
+                <div contenteditable="true">Subject: </div>
+                <div contenteditable="true">Class: </div>
+            </div>
 
-<input type="text" placeholder="School Name"
-oninput="updateField('school-name', this.value)">
+            <div class="vertical-divider"></div>
 
-<input type="text" placeholder="Subheading"
-oninput="updateField('subheading', this.value)">
+            <div>
+                <div contenteditable="true">Student Name: </div>
+                <div contenteditable="true">Roll No: </div>
+            </div>
 
-<input type="text" placeholder="Exam Title"
-oninput="updateField('exam-title', this.value)">
+            <div class="vertical-divider"></div>
 
-<hr>
+            <div>
+                <div contenteditable="true">Time: </div>
+                <div contenteditable="true">Total Marks: <span id="headerTotalMarks">0</span></div>
+            </div>
+        </div>
 
-<input type="text" placeholder="Subject"
-oninput="updateRow('row-subject','subject',this.value)">
+        <hr class="thick-divider">
+    </div>
 
-<input type="text" placeholder="Class"
-oninput="updateRow('row-class','className',this.value)">
+    <!-- SECTION CONTROLS -->
+    <div class="controls no-print">
+        <button id="addSectionBtn">Add Section</button>
+    </div>
 
-<input type="text" placeholder="Student Name"
-oninput="updateRow('row-student','studentName',this.value)">
+    <!-- SECTIONS CONTAINER -->
+    <div id="sectionsContainer"></div>
 
-<input type="text" placeholder="Roll No"
-oninput="updateRow('row-roll','rollNo',this.value)">
-
-<input type="text" placeholder="Total Marks"
-oninput="updateRow('row-marks','totalMarks',this.value)">
-
-<label>Time</label>
-<input id="hours" type="number" placeholder="Hours" oninput="updateTime()">
-<input id="minutes" type="number" placeholder="Minutes" oninput="updateTime()">
-
-<hr>
-
-<button onclick="addSection()">Add Section</button>
-<button onclick="downloadPDF()">Download PDF</button>
-<button onclick="printPaper()">Print</button>
-
-</div>
-
-<div class="paper-wrapper">
-
-<div id="paper" class="paper-container">
-
-<div class="header">
-<img id="logoPreview" class="logo" style="display:none;">
-<h1 id="school-name" class="school-name"></h1>
-<div id="subheading" class="subheading"></div>
-<div id="exam-title" class="exam-title"></div>
-</div>
-
-<div class="details">
-
-<div class="left-column">
-<div id="row-subject" class="detail-row">
-Subject: <span id="subject"></span>
-</div>
-<div id="row-class" class="detail-row">
-Class: <span id="className"></span>
-</div>
-<div id="row-student" class="detail-row">
-Student Name: <span id="studentName"></span>
-</div>
-</div>
-
-<div class="right-column">
-<div id="row-roll" class="detail-row">
-Roll No: <span id="rollNo"></span>
-</div>
-<div id="row-time" class="detail-row">
-Time: <span id="timeDisplay"></span>
-</div>
-<div id="row-marks" class="detail-row">
-Total Marks: <span id="totalMarks"></span>
-</div>
-</div>
-
-</div>
-
-<div class="section-divider"></div>
-
-<div id="questions-container"></div>
-
-</div>
-</div>
 </div>
 
 <script src="script.js"></script>
