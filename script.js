@@ -54,31 +54,53 @@ function toRoman(num){
 
 let sectionCount=0;
 
+function getSectionDescription(type){
+
+    switch(type){
+        case "MCQ":
+            return "Choose the correct answer from the options given below.";
+        case "Match":
+            return "Match the following items correctly.";
+        case "Short":
+            return "Answer the following questions.";
+        default:
+            return "Answer the following questions.";
+    }
+}
+
 function addSection(){
 
     sectionCount++;
     const container = document.getElementById("questions-container");
-    const roman=toRoman(sectionCount);
+    const roman = toRoman(sectionCount);
 
-    const section=document.createElement("div");
-    section.className="section-block";
+    const section = document.createElement("div");
+    section.className = "section-block";
 
-    section.innerHTML=`
+    section.innerHTML = `
         <div class="section-title">
-            <div>${roman}. 
-                <select class="section-type">
-                    <option>Short Answer</option>
-                    <option>MCQ</option>
-                    <option>Match the Following</option>
+
+            <div class="section-left">
+                ${roman}.
+                <select class="section-type" onchange="updateSectionDescription(this)">
+                    <option value="Short">Short Answer</option>
+                    <option value="MCQ">MCQ</option>
+                    <option value="Match">Match the Following</option>
                 </select>
+
+                <div class="section-description">
+                    ${getSectionDescription("Short")}
+                </div>
             </div>
-            <div>
-                <input type="number" class="numQ" placeholder="No.Q" style="width:60px;"> *
-                <input type="number" class="marksQ" placeholder="Marks" style="width:60px;"> =
-                <span class="sectionTotal">0</span>
+
+            <div class="section-marks">
+                <input type="number" class="numQ" placeholder="No.Q" style="width:60px;"> ×
+                <input type="number" class="marksQ" placeholder="Marks" style="width:60px;">
+                = <span class="sectionTotal">0</span> Marks
             </div>
-            <button onclick="removeSection(this)">Remove</button>
+
         </div>
+
         <div class="questions"></div>
         <button onclick="addQuestion(this)">Add Question</button>
     `;
@@ -100,6 +122,7 @@ function addSection(){
     numInput.oninput = calculate;
     marksInput.oninput = calculate;
 }
+
 
 function removeSection(btn){
     btn.closest(".section-block").remove();
@@ -207,4 +230,12 @@ function downloadPDF(){
 
 function printPaper(){
     window.print();
+}
+
+function updateSectionDescription(select){
+
+    const type = select.value;
+    const descDiv = select.parentElement.querySelector(".section-description");
+
+    descDiv.innerText = getSectionDescription(type);
 }
