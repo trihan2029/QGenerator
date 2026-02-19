@@ -1,11 +1,40 @@
-let sectionCount = 0;
 
-/* Header */
-function updateText(id,value){
-document.getElementById(id).innerText = value;
+function updateField(id, value) {
+document.getElementById(id).innerText = value.trim();
 }
 
-/* Roman */
+function updateRow(rowId, spanId, value) {
+const row = document.getElementById(rowId);
+const span = document.getElementById(spanId);
+span.innerText = value.trim();
+row.style.display = value.trim() === "" ? "none" : "block";
+}
+
+function updateTime() {
+const h = document.getElementById("hours").value;
+const m = document.getElementById("minutes").value;
+const row = document.getElementById("row-time");
+const display = document.getElementById("timeDisplay");
+if (!h && !m) { row.style.display = "none"; return; }
+let text = "";
+if (h) text += h + " Hour" + (h > 1 ? "s " : " ");
+if (m) text += m + " Minute" + (m > 1 ? "s" : "");
+display.innerText = text.trim();
+row.style.display = "block";
+}
+
+function loadLogo(event) {
+const reader = new FileReader();
+reader.onload = function() {
+const img = document.getElementById("logoPreview");
+img.src = reader.result;
+img.style.display = "block";
+};
+reader.readAsDataURL(event.target.files[0]);
+}
+
+let sectionCount = 0;
+
 function toRoman(num){
 const r=[["M",1000],["CM",900],["D",500],["CD",400],
 ["C",100],["XC",90],["L",50],["XL",40],
@@ -21,22 +50,19 @@ function toSmallRoman(n){
 return toRoman(n).toLowerCase();
 }
 
-/* Section Description */
 function getDescription(type){
 const map={
-VeryShort:"Answer in one or two sentences.",
 Short:"Answer the following questions.",
 Long:"Answer the following questions in detail.",
-MCQ:"Choose the correct answer from the options given below.",
+MCQ:"Choose the correct answer.",
 Match:"Match the following correctly.",
-Fill:"Fill in the blanks with suitable answers.",
-TF:"State whether the statements are True or False.",
+Fill:"Fill in the blanks.",
+TF:"State True or False.",
 OneWord:"Answer in one word."
 };
 return map[type];
 }
 
-/* Add Section */
 function addSection(){
 
 sectionCount++;
@@ -52,7 +78,6 @@ section.innerHTML=`
 <div class="section-left">
 ${roman}.
 <select class="section-type" onchange="updateDescription(this)">
-<option value="VeryShort">Very Short Answer</option>
 <option value="Short">Short Answer</option>
 <option value="Long">Long Answer</option>
 <option value="MCQ">MCQ</option>
@@ -63,7 +88,7 @@ ${roman}.
 </select>
 
 <div class="section-description">
-${getDescription("VeryShort")}
+${getDescription("Short")}
 </div>
 </div>
 
@@ -83,7 +108,6 @@ ${getDescription("VeryShort")}
 
 container.appendChild(section);
 
-/* Marks calculation */
 const numInput=section.querySelector(".numQ");
 const marksInput=section.querySelector(".marksQ");
 const totalSpan=section.querySelector(".sectionTotal");
@@ -97,14 +121,12 @@ numInput.oninput=calc;
 marksInput.oninput=calc;
 }
 
-/* Update Description */
 function updateDescription(select){
 const type=select.value;
 const desc=select.parentElement.querySelector(".section-description");
 desc.innerText=getDescription(type);
 }
 
-/* Add Question */
 function addQuestion(btn){
 
 const section=btn.parentElement;
@@ -150,7 +172,6 @@ ${number}.
 qContainer.appendChild(div);
 }
 
-/* Match Pair */
 function addMatchPair(btn){
 
 const q=btn.parentElement;
@@ -167,6 +188,10 @@ r.innerHTML=`(${String.fromCharCode(96+count)}) <input type="text">`;
 
 left.appendChild(l);
 right.appendChild(r);
+}
+
+function downloadPDF(){
+html2pdf().from(document.getElementById("paper")).save("question-paper.pdf");
 }
 
 function printPaper(){

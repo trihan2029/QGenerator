@@ -5,46 +5,95 @@
 <title>Question Paper Generator</title>
 
 <link rel="stylesheet" href="style.css">
-</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+</head>
 <body>
 
 <div class="container">
 
-<!-- ================= FORM ================= -->
 <div class="form-section">
 
 <h3>Enter Details</h3>
 
-<label>School Name</label>
-<input type="text" oninput="updateText('school-name', this.value)">
+<label>Upload Logo</label>
+<input type="file" accept="image/*" onchange="loadLogo(event)">
 
-<label>Exam Title</label>
-<input type="text" oninput="updateText('exam-title', this.value)">
+<input type="text" placeholder="School Name"
+oninput="updateField('school-name', this.value)">
 
-<label>Total Marks</label>
-<input type="number" oninput="updateText('totalMarks', this.value)">
+<input type="text" placeholder="Subheading"
+oninput="updateField('subheading', this.value)">
+
+<input type="text" placeholder="Exam Title"
+oninput="updateField('exam-title', this.value)">
+
+<hr>
+
+<input type="text" placeholder="Subject"
+oninput="updateRow('row-subject','subject',this.value)">
+
+<input type="text" placeholder="Class"
+oninput="updateRow('row-class','className',this.value)">
+
+<input type="text" placeholder="Student Name"
+oninput="updateRow('row-student','studentName',this.value)">
+
+<input type="text" placeholder="Roll No"
+oninput="updateRow('row-roll','rollNo',this.value)">
+
+<input type="text" placeholder="Total Marks"
+oninput="updateRow('row-marks','totalMarks',this.value)">
+
+<label>Time</label>
+<input id="hours" type="number" placeholder="Hours" oninput="updateTime()">
+<input id="minutes" type="number" placeholder="Minutes" oninput="updateTime()">
 
 <hr>
 
 <button onclick="addSection()">Add Section</button>
+<button onclick="downloadPDF()">Download PDF</button>
 <button onclick="printPaper()">Print</button>
 
 </div>
 
-
-<!-- ================= PREVIEW ================= -->
 <div class="paper-wrapper">
 
 <div id="paper" class="paper-container">
 
-<!-- HEADER -->
 <div class="header">
-<h1 id="school-name"></h1>
-<div id="exam-title"></div>
-<div class="marks-line">
+<img id="logoPreview" class="logo" style="display:none;">
+<h1 id="school-name" class="school-name"></h1>
+<div id="subheading" class="subheading"></div>
+<div id="exam-title" class="exam-title"></div>
+</div>
+
+<div class="details">
+
+<div class="left-column">
+<div id="row-subject" class="detail-row">
+Subject: <span id="subject"></span>
+</div>
+<div id="row-class" class="detail-row">
+Class: <span id="className"></span>
+</div>
+<div id="row-student" class="detail-row">
+Student Name: <span id="studentName"></span>
+</div>
+</div>
+
+<div class="right-column">
+<div id="row-roll" class="detail-row">
+Roll No: <span id="rollNo"></span>
+</div>
+<div id="row-time" class="detail-row">
+Time: <span id="timeDisplay"></span>
+</div>
+<div id="row-marks" class="detail-row">
 Total Marks: <span id="totalMarks"></span>
 </div>
+</div>
+
 </div>
 
 <div class="section-divider"></div>
@@ -52,9 +101,7 @@ Total Marks: <span id="totalMarks"></span>
 <div id="questions-container"></div>
 
 </div>
-
 </div>
-
 </div>
 
 <script src="script.js"></script>
