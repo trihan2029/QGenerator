@@ -1,35 +1,78 @@
-function toRoman(num) {
-    const r = [["M",1000],["CM",900],["D",500],["CD",400],
-               ["C",100],["XC",90],["L",50],["XL",40],
-               ["X",10],["IX",9],["V",5],["IV",4],["I",1]];
-    let s = "";
-    for (let [l,v] of r) while(num>=v){s+=l;num-=v;}
+function updateField(id, value){
+    document.getElementById(id).innerText = value;
+}
+
+function updateRow(rowId, spanId, value){
+    const row = document.getElementById(rowId);
+    const span = document.getElementById(spanId);
+    span.innerText = value;
+    row.style.display = value ? "block" : "none";
+}
+
+function updateTime(){
+    const h = hours.value;
+    const m = minutes.value;
+    const row = document.getElementById("row-time");
+    if(!h && !m){ row.style.display="none"; return; }
+
+    let t="";
+    if(h) t+=h+" Hour"+(h>1?"s ":" ");
+    if(m) t+=m+" Minute"+(m>1?"s":"");
+    timeDisplay.innerText=t.trim();
+    row.style.display="block";
+}
+
+function loadLogo(event){
+    const reader=new FileReader();
+    reader.onload=function(){
+        logoPreview.src=reader.result;
+        logoPreview.style.display="block";
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+function handleSubjectChange(){
+    const v=subjectSelect.value;
+    if(v==="Other"){
+        customSubject.style.display="block";
+    }else{
+        customSubject.style.display="none";
+        updateRow("row-subject","subject",v);
+    }
+}
+
+/* Roman */
+function toRoman(num){
+    const r=[["M",1000],["CM",900],["D",500],["CD",400],
+             ["C",100],["XC",90],["L",50],["XL",40],
+             ["X",10],["IX",9],["V",5],["IV",4],["I",1]];
+    let s="";
+    for(let [l,v] of r) while(num>=v){s+=l;num-=v;}
     return s;
 }
 
-function toSmallRoman(num){
-    return toRoman(num).toLowerCase();
-}
+function toSmallRoman(n){ return toRoman(n).toLowerCase(); }
 
-let sectionCount = 0;
+let sectionCount=0;
 
-function addSection() {
+function addSection(){
 
     sectionCount++;
-    const roman = toRoman(sectionCount);
+    const roman=toRoman(sectionCount);
 
-    const section = document.createElement("div");
+    const section=document.createElement("div");
+    section.className="section-block";
 
-    section.innerHTML = `
+    section.innerHTML=`
         <div class="section-title">
-            <div>${roman}.
+            <div>${roman}. 
                 <select class="section-type">
                     <option>Short Answer</option>
                     <option>MCQ</option>
                     <option>Match the Following</option>
                 </select>
             </div>
-            <button onclick="this.parentElement.parentElement.remove()">Remove Section</button>
+            <button onclick="this.closest('.section-block').remove()">Remove Section</button>
         </div>
         <div class="questions"></div>
         <button onclick="addQuestion(this)">Add Question</button>
@@ -38,49 +81,44 @@ function addSection() {
     questions-container.appendChild(section);
 }
 
-function addQuestion(btn) {
+function addQuestion(btn){
 
-    const section = btn.parentElement;
-    const type = section.querySelector(".section-type").value;
-    const qContainer = section.querySelector(".questions");
-    const number = qContainer.children.length + 1;
+    const section=btn.parentElement;
+    const type=section.querySelector(".section-type").value;
+    const qContainer=section.querySelector(".questions");
+    const number=qContainer.children.length+1;
 
-    const div = document.createElement("div");
-    div.className = "question-item";
+    const div=document.createElement("div");
+    div.className="question-item";
 
-    if(type === "MCQ"){
-
-        div.innerHTML = `
+    if(type==="MCQ"){
+        div.innerHTML=`
             ${number}.
             <textarea class="question-text"></textarea>
-            <input type="file" accept="image/*" onchange="addImage(this)">
             <div class="mcq-options">
-                (a) <input type="text">
-                (b) <input type="text">
-                (c) <input type="text">
-                (d) <input type="text">
+                (a)<input type="text">
+                (b)<input type="text">
+                (c)<input type="text">
+                (d)<input type="text">
             </div>
             <button onclick="this.parentElement.remove()">Remove</button>
         `;
-
-    } else if(type === "Match the Following"){
-
-        div.innerHTML = `
+    }
+    else if(type==="Match the Following"){
+        div.innerHTML=`
             ${number}.
             <div class="match-container">
-                <div class="match-column left-match"></div>
-                <div class="match-column right-match"></div>
+                <div class="match-column left"></div>
+                <div class="match-column right"></div>
             </div>
             <button onclick="addMatchPair(this)">Add Pair</button>
             <button onclick="this.parentElement.remove()">Remove</button>
         `;
-
-    } else {
-
-        div.innerHTML = `
+    }
+    else{
+        div.innerHTML=`
             ${number}.
             <textarea class="question-text"></textarea>
-            <input type="file" accept="image/*" onchange="addImage(this)">
             <button onclick="this.parentElement.remove()">Remove</button>
         `;
     }
@@ -90,33 +128,22 @@ function addQuestion(btn) {
 
 function addMatchPair(btn){
 
-    const question = btn.parentElement;
-    const left = question.querySelector(".left-match");
-    const right = question.querySelector(".right-match");
+    const q=btn.parentElement;
+    const left=q.querySelector(".left");
+    const right=q.querySelector(".right");
 
-    const count = left.children.length + 1;
+    const count=left.children.length+1;
 
-    const leftDiv = document.createElement("div");
-    leftDiv.className = "match-item";
-    leftDiv.innerHTML = `${toSmallRoman(count)}. <input type="text">`;
+    const l=document.createElement("div");
+    l.className="match-item";
+    l.innerHTML=`${toSmallRoman(count)}. <input type="text">`;
 
-    const rightDiv = document.createElement("div");
-    rightDiv.className = "match-item";
-    rightDiv.innerHTML = `(${String.fromCharCode(96+count)}) <input type="text">`;
+    const r=document.createElement("div");
+    r.className="match-item";
+    r.innerHTML=`(${String.fromCharCode(96+count)}) <input type="text">`;
 
-    left.appendChild(leftDiv);
-    right.appendChild(rightDiv);
-}
-
-function addImage(input){
-    const reader = new FileReader();
-    reader.onload = function(){
-        const img = document.createElement("img");
-        img.src = reader.result;
-        img.className = "question-image";
-        input.parentElement.appendChild(img);
-    };
-    reader.readAsDataURL(input.files[0]);
+    left.appendChild(l);
+    right.appendChild(r);
 }
 
 function downloadPDF(){

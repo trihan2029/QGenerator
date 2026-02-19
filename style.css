@@ -23,6 +23,7 @@ body {
     margin-bottom: 8px;
 }
 
+/* Paper */
 .paper-wrapper {
     width: 65%;
     display: flex;
@@ -36,7 +37,51 @@ body {
     box-sizing: border-box;
 }
 
-/* Divider */
+/* Header */
+.header {
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px;
+}
+
+.school-name {
+    font-size: 26px;
+    margin: 0;
+}
+
+.subheading {
+    font-size: 16px;
+}
+
+.exam-title {
+    font-size: 18px;
+}
+
+/* Details */
+.details {
+    display: flex;
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.left-column {
+    width: 45%;
+    border-right: 2px solid black;
+    padding-right: 20px;
+}
+
+.right-column {
+    width: 45%;
+    padding-left: 20px;
+}
+
+/* Thick Divider */
 .section-divider {
     width: 100%;
     height: 4px;
@@ -44,32 +89,33 @@ body {
     margin: 20px 0;
 }
 
-/* Section */
+/* Section Title */
 .section-title {
     display: flex;
     justify-content: space-between;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
+/* Thin line for each section */
+.section-block {
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Question */
 .question-item {
     margin-left: 15px;
     margin-top: 10px;
 }
 
-/* Textarea */
 .question-text {
     width: 95%;
     min-height: 50px;
     resize: vertical;
 }
 
-/* Image */
-.question-image {
-    max-width: 200px;
-    margin-top: 5px;
-}
-
-/* MCQ options row */
+/* MCQ */
 .mcq-options {
     display: flex;
     gap: 15px;
@@ -80,7 +126,7 @@ body {
     width: 100%;
 }
 
-/* Match layout */
+/* Match */
 .match-container {
     display: flex;
     justify-content: space-between;

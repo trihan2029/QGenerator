@@ -12,6 +12,7 @@
 
 <div class="container">
 
+    <!-- ================= FORM ================= -->
     <div class="form-section">
 
         <h3>Enter Details</h3>
@@ -76,10 +77,12 @@
 
     </div>
 
+    <!-- ================= PREVIEW ================= -->
     <div class="paper-wrapper">
 
         <div id="paper" class="paper-container">
 
+            <!-- HEADER -->
             <div class="header">
                 <img id="logoPreview" class="logo" style="display:none;">
                 <h1 id="school-name" class="school-name"></h1>
@@ -87,36 +90,25 @@
                 <div id="exam-title" class="exam-title"></div>
             </div>
 
+            <!-- DETAILS -->
             <div class="details">
-
                 <div class="left-column">
-                    <div id="row-subject" class="detail-row">
-                        Subject: <span id="subject"></span>
-                    </div>
-                    <div id="row-class" class="detail-row">
-                        Class: <span id="className"></span>
-                    </div>
-                    <div id="row-student" class="detail-row">
-                        Student Name: <span id="studentName"></span>
-                    </div>
+                    <div id="row-subject">Subject: <span id="subject"></span></div>
+                    <div id="row-class">Class: <span id="className"></span></div>
+                    <div id="row-student">Student Name: <span id="studentName"></span></div>
                 </div>
 
                 <div class="right-column">
-                    <div id="row-roll" class="detail-row">
-                        Roll No: <span id="rollNo"></span>
-                    </div>
-                    <div id="row-time" class="detail-row">
-                        Time: <span id="timeDisplay"></span>
-                    </div>
-                    <div id="row-marks" class="detail-row">
-                        Total Marks: <span id="totalMarks"></span>
-                    </div>
+                    <div id="row-roll">Roll No: <span id="rollNo"></span></div>
+                    <div id="row-time">Time: <span id="timeDisplay"></span></div>
+                    <div id="row-marks">Total Marks: <span id="totalMarks"></span></div>
                 </div>
-
             </div>
 
+            <!-- THICK DIVIDER -->
             <div class="section-divider"></div>
 
+            <!-- QUESTIONS -->
             <div id="questions-container"></div>
 
         </div>
