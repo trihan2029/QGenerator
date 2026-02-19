@@ -1,54 +1,3 @@
-function updateField(id, value) {
-    document.getElementById(id).innerText = value.trim();
-}
-
-function updateRow(rowId, spanId, value) {
-    const row = document.getElementById(rowId);
-    const span = document.getElementById(spanId);
-    span.innerText = value.trim();
-    row.style.display = value.trim() === "" ? "none" : "block";
-}
-
-function updateTime() {
-    const h = hours.value;
-    const m = minutes.value;
-    const row = document.getElementById("row-time");
-    const display = document.getElementById("timeDisplay");
-
-    if (!h && !m) {
-        row.style.display = "none";
-        return;
-    }
-
-    let text = "";
-    if (h) text += h + " Hour" + (h > 1 ? "s " : " ");
-    if (m) text += m + " Minute" + (m > 1 ? "s" : "");
-
-    display.innerText = text.trim();
-    row.style.display = "block";
-}
-
-function loadLogo(event) {
-    const reader = new FileReader();
-    reader.onload = function() {
-        logoPreview.src = reader.result;
-        logoPreview.style.display = "block";
-    };
-    reader.readAsDataURL(event.target.files[0]);
-}
-
-/* Subject */
-function handleSubjectChange() {
-    const value = subjectSelect.value;
-    if (value === "Other") {
-        customSubject.style.display = "block";
-    } else {
-        customSubject.style.display = "none";
-        updateRow('row-subject','subject',value);
-    }
-}
-
-/* Roman */
 function toRoman(num) {
     const r = [["M",1000],["CM",900],["D",500],["CD",400],
                ["C",100],["XC",90],["L",50],["XL",40],
@@ -58,118 +7,122 @@ function toRoman(num) {
     return s;
 }
 
-let sectionCount = 0;
-
-function getQuestionTypes(subject) {
-    const common = ["Short Answer","Long Answer","Fill in the blanks","MCQ","Match the Following"];
-
-    if (subject === "Mathematics")
-        return ["Solve the following","Word Problems",...common];
-
-    if (subject === "Science" || subject === "Biology")
-        return ["Define","Give Reasons","Draw Diagram",...common];
-
-    return common;
+function toSmallRoman(num){
+    return toRoman(num).toLowerCase();
 }
+
+let sectionCount = 0;
 
 function addSection() {
 
     sectionCount++;
-    const container = document.getElementById("questions-container");
     const roman = toRoman(sectionCount);
-    const subject = subjectSelect.value;
-
-    const types = getQuestionTypes(subject);
-    const options = types.map(t => `<option>${t}</option>`).join("");
 
     const section = document.createElement("div");
 
     section.innerHTML = `
         <div class="section-title">
-            <div>${roman}. 
-                <select class="section-type">${options}</select>
+            <div>${roman}.
+                <select class="section-type">
+                    <option>Short Answer</option>
+                    <option>MCQ</option>
+                    <option>Match the Following</option>
+                </select>
             </div>
-            <div>
-                <input type="number" class="numQ" style="width:60px;"> *
-                <input type="number" class="marksQ" style="width:60px;"> =
-                <span class="totalMarks">0</span> Marks
-            </div>
-            <button onclick="removeSection(this)">Remove Section</button>
+            <button onclick="this.parentElement.parentElement.remove()">Remove Section</button>
         </div>
         <div class="questions"></div>
         <button onclick="addQuestion(this)">Add Question</button>
     `;
 
-    container.appendChild(section);
-
-    const numInput = section.querySelector(".numQ");
-    const marksInput = section.querySelector(".marksQ");
-    const totalSpan = section.querySelector(".totalMarks");
-
-    function calc() {
-        totalSpan.innerText = (numInput.value && marksInput.value)
-            ? numInput.value * marksInput.value
-            : 0;
-    }
-
-    numInput.oninput = calc;
-    marksInput.oninput = calc;
-}
-
-function removeSection(btn) {
-    btn.closest("div").parentElement.remove();
+    questions-container.appendChild(section);
 }
 
 function addQuestion(btn) {
 
     const section = btn.parentElement;
+    const type = section.querySelector(".section-type").value;
     const qContainer = section.querySelector(".questions");
     const number = qContainer.children.length + 1;
-
-    const type = section.querySelector(".section-type").value;
 
     const div = document.createElement("div");
     div.className = "question-item";
 
-    div.innerHTML = `
-        ${number}. 
-        <input type="text" style="width:70%;">
-        <button onclick="removeQuestion(this)">Remove</button>
-        <button onclick="addSubPart(this)">Add Sub Part</button>
-        <div class="subparts ${type==='MCQ' || type==='Match the Following' ? 'two-column':''}"></div>
-    `;
+    if(type === "MCQ"){
+
+        div.innerHTML = `
+            ${number}.
+            <textarea class="question-text"></textarea>
+            <input type="file" accept="image/*" onchange="addImage(this)">
+            <div class="mcq-options">
+                (a) <input type="text">
+                (b) <input type="text">
+                (c) <input type="text">
+                (d) <input type="text">
+            </div>
+            <button onclick="this.parentElement.remove()">Remove</button>
+        `;
+
+    } else if(type === "Match the Following"){
+
+        div.innerHTML = `
+            ${number}.
+            <div class="match-container">
+                <div class="match-column left-match"></div>
+                <div class="match-column right-match"></div>
+            </div>
+            <button onclick="addMatchPair(this)">Add Pair</button>
+            <button onclick="this.parentElement.remove()">Remove</button>
+        `;
+
+    } else {
+
+        div.innerHTML = `
+            ${number}.
+            <textarea class="question-text"></textarea>
+            <input type="file" accept="image/*" onchange="addImage(this)">
+            <button onclick="this.parentElement.remove()">Remove</button>
+        `;
+    }
 
     qContainer.appendChild(div);
 }
 
-function removeQuestion(btn){
-    btn.parentElement.remove();
+function addMatchPair(btn){
+
+    const question = btn.parentElement;
+    const left = question.querySelector(".left-match");
+    const right = question.querySelector(".right-match");
+
+    const count = left.children.length + 1;
+
+    const leftDiv = document.createElement("div");
+    leftDiv.className = "match-item";
+    leftDiv.innerHTML = `${toSmallRoman(count)}. <input type="text">`;
+
+    const rightDiv = document.createElement("div");
+    rightDiv.className = "match-item";
+    rightDiv.innerHTML = `(${String.fromCharCode(96+count)}) <input type="text">`;
+
+    left.appendChild(leftDiv);
+    right.appendChild(rightDiv);
 }
 
-function addSubPart(btn) {
-
-    const q = btn.parentElement;
-    const sub = q.querySelector(".subparts");
-    const count = sub.children.length;
-    const letter = String.fromCharCode(97 + count);
-
-    const div = document.createElement("div");
-    div.className = "subpart";
-
-    div.innerHTML = `
-        (${letter}) 
-        <input type="text" style="width:75%;">
-        <button onclick="this.parentElement.remove()">X</button>
-    `;
-
-    sub.appendChild(div);
+function addImage(input){
+    const reader = new FileReader();
+    reader.onload = function(){
+        const img = document.createElement("img");
+        img.src = reader.result;
+        img.className = "question-image";
+        input.parentElement.appendChild(img);
+    };
+    reader.readAsDataURL(input.files[0]);
 }
 
-/* PDF */
-function downloadPDF() {
+function downloadPDF(){
     html2pdf().from(document.getElementById("paper")).save("question-paper.pdf");
 }
 
-function printPaper() {
+function printPaper(){
     window.print();
 }
